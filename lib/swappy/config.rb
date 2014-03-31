@@ -1,31 +1,27 @@
 module Swappy
   class Config
-    include Enumerable
+    attr_reader :json_data, :link_root, :source_root
 
-    attr_reader :path
-
-    def initialize(path=File.join(Dir.home, '.swappy.json'))
-      @path = path
+    def initialize(json_data, link_root, source_root)
+      @link_root = link_root
+      @source_root = source_root
+      @json_data = json_data
     end
 
-    def link_sets
-      @link_sets ||= config_json_content['link_sets'].map { |link_set| LinkSet.new(link_set) }
+    def link_file
+      json_data[0]
     end
 
-    def each(&block)
-      link_sets.each do |link_set|
-        block.call(link_set)
-      end
+    def source_file
+      json_data[1]
     end
 
-    protected
-
-    def config_content
-      @config_content ||= File.read(File.expand_path(path))
+    def link_path
+      File.expand_path(File.join(link_root, link_file))
     end
 
-    def config_json_content
-      @config_json_content ||= Oj.load(config_content)
+    def source_path
+      File.expand_path(File.join(source_root, source_file))
     end
   end
 end

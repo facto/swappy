@@ -1,5 +1,5 @@
 module Swappy
-  class LinkSet
+  class ConfigSet
     include Enumerable
 
     attr_reader :json_data
@@ -9,8 +9,8 @@ module Swappy
     end
 
     def each(&block)
-      links.each do |link|
-        block.call(link)
+      configs.each do |config|
+        block.call(config)
       end
     end
 
@@ -26,8 +26,8 @@ module Swappy
       properties['source_root']
     end
 
-    def links
-      @links ||= properties['links'].map { |link| Link.new(link) }
+    def configs
+      @configs ||= properties['configs'].map { |config| Config.new(config, link_root, source_root) }
     end
 
     protected

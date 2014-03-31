@@ -3,10 +3,11 @@ require 'swappy'
 require 'trollop'
 
 module Swappy
-  class Cli
+  class CLI
     attr_reader :cmd
 
     COMMANDS = %w(
+      list
       swap
     )
 
@@ -22,9 +23,17 @@ Usage:
   commands:
 #{COMMANDS.map { |command| "    #{command}" }.join("\n") }
         EOS
+        stop_on COMMANDS
       end
 
-      @cmd = ARGV.shift || ''
+      @cmd = ARGV.shift
+      case cmd
+      when 'list'
+      when 'swap'
+        Trollop::die 'must provide a config set name' if ARGV.empty?
+      else
+        Trollop::die "unknown command"
+      end
     end
 
     def run
@@ -34,12 +43,21 @@ Usage:
   protected
 
     def swap
-      swapper = Swapper.new
-      swapper.swap(name)
+      command = Swappy::Commands::Swap.new(config_set_name)
+      command.call
+    rescue Swappy::Commands::Swap::ConfigSetNotFoundError
+      config_sets = Swappy::Commands::List.new.call.join(', ')
+      Trollop::die "unknown config set #{config_set_name}; must be one of #{config_sets}"
     end
 
-    def name
-      @name ||= ARGV.shift
+    def list
+      command = Swappy::Commands::List.new
+      sets = command.call
+      sets.each { |set| puts set }
+    end
+
+    def config_set_name
+      @config_set_name ||= ARGV.shift
     end
   end
 end
