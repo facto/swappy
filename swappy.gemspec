@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = Swappy::VERSION
   spec.authors       = ["Joshua Rieken"]
   spec.email         = ["joshua@joshuarieken.com"]
-  spec.summary       = %q{TODO: Write a short summary. Required.}
-  spec.description   = %q{TODO: Write a longer description. Optional.}
+  spec.description   = %q{Swap your config files with ease}
+  spec.summary       = spec.description
   spec.homepage      = ""
   spec.license       = "MIT"
 
@@ -22,5 +22,4 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rake"
   spec.add_development_dependency "trollop", "~> 2"
   spec.add_development_dependency "oj", "~> 2"
-  spec.add_development_dependency "yell", "~> 1"
 end
