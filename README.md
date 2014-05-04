@@ -15,7 +15,7 @@ Run `swappy --help` as a sanity check.
 
 ## Example
 
-Put this `.swappy.json` config file in your `~`:
+First, you put a `.swappy.json` config file in your `~`. Here's an example:
 
     {
       "config_sets": {
