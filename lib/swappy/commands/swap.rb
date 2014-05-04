@@ -36,6 +36,7 @@ module Swappy
             raise e
           end
         end
+        puts "Done!"
       end
 
       private
