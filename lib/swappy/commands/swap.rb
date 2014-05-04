@@ -20,7 +20,9 @@ module Swappy
           backup = nil
           if File.symlink?(link_path)
             existing_symlink_target = File.readlink(link_path)
-            File.unlink(link_path)
+            backup = backup_path(link_path)
+            puts "backing up symlink #{link_path} to #{backup}"
+            File.rename(link_path, backup)
           elsif File.exists?(link_path)
             backup = backup_path(link_path)
             puts "backing up #{link_path} to #{backup}"
