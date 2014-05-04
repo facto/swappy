@@ -5,6 +5,12 @@ module Swappy
     class Command
       extend Forwardable
 
+      attr_reader :options
+
+      def initialize(options={})
+        @options = options
+      end
+
       protected
 
       def app_config

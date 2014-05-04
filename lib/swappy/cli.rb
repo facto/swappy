@@ -43,7 +43,7 @@ Usage:
   protected
 
     def swap
-      command = Swappy::Commands::Swap.new(config_set_name)
+      command = Swappy::Commands::Swap.new(name: config_set_name)
       command.call
     rescue Swappy::Commands::Swap::ConfigSetNotFoundError
       config_sets = Swappy::Commands::List.new.call.join(', ')

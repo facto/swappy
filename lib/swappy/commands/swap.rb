@@ -7,8 +7,9 @@ module Swappy
 
       def_delegators :config_set, :link_root, :source_root, :configs
 
-      def initialize(name)
-        @name = name
+      def initialize(options={})
+        super options
+        @name = options[:name]
         raise ConfigSetNotFoundError unless config_set
       end
 
@@ -41,7 +42,7 @@ module Swappy
       end
 
       def config_set
-        app_config.find_config_set_by_name(name)
+        @config_set ||= app_config.find_config_set_by_name(name)
       end
 
       def backup_path(link_path)
