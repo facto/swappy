@@ -1,8 +1,15 @@
 require 'spec_helper'
 
 describe Swappy::AppConfig do
+  let(:options) do
+    {
+      path: path
+    }
+  end
+
   let(:path) { 'some_path' }
-  let(:app_config) { described_class.new(path) }
+
+  let(:app_config) { described_class.new(options) }
 
   it 'includes Enumerable' do
     expect(app_config).to respond_to(:each)

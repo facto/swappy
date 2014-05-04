@@ -27,8 +27,14 @@ describe Swappy::Commands::Swap do
       end
     end
 
-    it 'raises ConfigSetNotFoundError if the config set is not found' do
-      expect { swap_command }.to raise_error(described_class::ConfigSetNotFoundError)
+    context 'with no config set' do
+      before :each do
+        allow_any_instance_of(described_class).to receive(:config_set).and_return(nil)
+      end
+
+      it 'raises ConfigSetNotFoundError if the config set is not found' do
+        expect { swap_command }.to raise_error(described_class::ConfigSetNotFoundError)
+      end
     end
   end
 end

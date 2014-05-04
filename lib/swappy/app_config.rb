@@ -2,10 +2,11 @@ module Swappy
   class AppConfig
     include Enumerable
 
-    attr_reader :path
+    attr_reader :options, :path
 
-    def initialize(path=File.join(Dir.home, '.swappy.json'))
-      @path = path
+    def initialize(options={})
+      @options = options
+      @path = options[:path]
     end
 
     def config_sets
