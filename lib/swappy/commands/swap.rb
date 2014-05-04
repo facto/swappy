@@ -13,35 +13,32 @@ module Swappy
       end
 
       def call
+        switch_to_config_set
+      end
+
+      private
+
+      def switch_to_config_set
         puts "Switching to config set #{config_set.name}..."
         config_set.each do |config|
-          link_path = config.link_path
-          existing_symlink_target = nil
-          backup = nil
-          if File.symlink?(link_path)
-            existing_symlink_target = File.readlink(link_path)
-            backup = backup_path(link_path)
-            puts "backing up symlink #{link_path} to #{backup}"
-            File.rename(link_path, backup)
-          elsif File.exists?(link_path)
-            backup = backup_path(link_path)
-            puts "backing up #{link_path} to #{backup}"
-            File.rename(link_path, backup)
-          end
-          begin
-            puts "linking #{link_path} to #{config.source_path}"
-            File.symlink(config.source_path, link_path)
-          rescue => e
-            if existing_symlink_target
-              File.symlink(existing_symlink_target, link_path)
-            end
-            raise e
-          end
+          backup(config.link_path)
+          link(config.source_path, config.link_path)
         end
         puts "Done!"
       end
 
-      private
+      def backup(link_path)
+        if File.exists?(link_path)
+          backup_path = backup_path(link_path)
+          puts "backing up #{File.symlink?(link_path) ? 'symlink ' : ' '}#{link_path} to #{backup_path}"
+          File.rename(link_path, backup_path)
+        end
+      end
+
+      def link(source_path, link_path)
+        puts "linking #{link_path} to #{source_path}"
+        File.symlink(source_path, link_path)
+      end
 
       def config_set
         app_config.find_config_set_by_name(name)
